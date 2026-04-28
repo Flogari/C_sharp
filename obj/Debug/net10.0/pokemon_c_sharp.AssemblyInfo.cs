@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("pokemon_c_sharp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1f07455af96087df9b6ad8174fcdc9d04a5a6424")]
 [assembly: System.Reflection.AssemblyProductAttribute("pokemon_c_sharp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("pokemon_c_sharp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
