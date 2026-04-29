@@ -14,6 +14,5 @@ public abstract class Move
         Range = range;
         MoveType = type;
     }
-
     public abstract void Execute(Pokemon user, Pokemon target);
 }

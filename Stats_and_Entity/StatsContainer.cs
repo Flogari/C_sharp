@@ -34,7 +34,6 @@ public class StatsContainer
         BaseSpeed = spd;
     }
 
-    // Méthode pour réinitialiser les bonus
     public void ResetBonuses()
     {
         BonusAttack = 0;

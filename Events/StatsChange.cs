@@ -78,6 +78,6 @@ public class StatsChange : GameEvent
         stats.Add("SPEATK");
         stats.Add("SPEDEF");
         stats.Add("SPEED");
-        Console.WriteLine($"{playerPokemon.Name} a muté il gagne +{GoodRNG} en {stats[UpStat+1]} et perd -{BadRNG} en {stats[DownStat+1]} ! ");
+        Console.WriteLine($"{playerPokemon.Name} a muté il gagne +{GoodRNG} en {stats[UpStat - 1]} et perd -{BadRNG} en {stats[DownStat - 1]} ! ");
     }
 }

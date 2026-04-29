@@ -1,0 +1,15 @@
+C:\Users\Mimi\Desktop\projets\pokemon_c_sharp\bin\Debug\net10.0\pokemon_c_sharp.exe
+C:\Users\Mimi\Desktop\projets\pokemon_c_sharp\bin\Debug\net10.0\pokemon_c_sharp.deps.json
+C:\Users\Mimi\Desktop\projets\pokemon_c_sharp\bin\Debug\net10.0\pokemon_c_sharp.runtimeconfig.json
+C:\Users\Mimi\Desktop\projets\pokemon_c_sharp\bin\Debug\net10.0\pokemon_c_sharp.dll
+C:\Users\Mimi\Desktop\projets\pokemon_c_sharp\bin\Debug\net10.0\pokemon_c_sharp.pdb
+C:\Users\Mimi\Desktop\projets\pokemon_c_sharp\obj\Debug\net10.0\pokemon_c_sharp.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Mimi\Desktop\projets\pokemon_c_sharp\obj\Debug\net10.0\pokemon_c_sharp.AssemblyInfoInputs.cache
+C:\Users\Mimi\Desktop\projets\pokemon_c_sharp\obj\Debug\net10.0\pokemon_c_sharp.AssemblyInfo.cs
+C:\Users\Mimi\Desktop\projets\pokemon_c_sharp\obj\Debug\net10.0\pokemon_c_sharp.csproj.CoreCompileInputs.cache
+C:\Users\Mimi\Desktop\projets\pokemon_c_sharp\obj\Debug\net10.0\pokemon_c_sharp.sourcelink.json
+C:\Users\Mimi\Desktop\projets\pokemon_c_sharp\obj\Debug\net10.0\pokemon_c_sharp.dll
+C:\Users\Mimi\Desktop\projets\pokemon_c_sharp\obj\Debug\net10.0\refint\pokemon_c_sharp.dll
+C:\Users\Mimi\Desktop\projets\pokemon_c_sharp\obj\Debug\net10.0\pokemon_c_sharp.pdb
+C:\Users\Mimi\Desktop\projets\pokemon_c_sharp\obj\Debug\net10.0\pokemon_c_sharp.genruntimeconfig.cache
+C:\Users\Mimi\Desktop\projets\pokemon_c_sharp\obj\Debug\net10.0\ref\pokemon_c_sharp.dll

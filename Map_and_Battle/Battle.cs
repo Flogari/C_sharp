@@ -3,8 +3,6 @@ public class Battle
     public List<Pokemon> Players;
     public List<Pokemon> Enemies;
     public Queue<Pokemon> TurnOrder;
-    public bool IsBattleOver;
-
     public event Action<string> OnLogMessage;
     public event Action OnBattleEnd;
 
@@ -13,7 +11,6 @@ public class Battle
         Players = players;
         Enemies = enemies;
         TurnOrder = new Queue<Pokemon>();
-        IsBattleOver = false;
     }
     private void DetermineTurnOrder()
     {
@@ -29,30 +26,53 @@ public class Battle
         }
     }
 
-    public void StartBattle()
+    public bool StartBattle(Map map) // Renvoie true si victoire, false si défaite
     {
-        OnLogMessage?.Invoke("Le combat commence !");
+        OnLogMessage?.Invoke("--- DÉBUT DE L'AFFRONTEMENT ---");
 
-        while (IsBattleOver == false)
+        while (!IsBattleOver())
         {
             DetermineTurnOrder();
 
-            while (TurnOrder.Count > 0 && IsBattleOver == false)
+            while (TurnOrder.Count > 0 && !IsBattleOver())
             {
                 Pokemon activePoke = TurnOrder.Dequeue();
-                if (activePoke.CurrentHP <= 0)
-                {
-                    continue;
-                }
-                ExecuteTurn(activePoke);
+                if (activePoke.CurrentHP <= 0) continue;
+                ExecuteTurn(activePoke, map);
             }
         }
-        OnLogMessage?.Invoke("Le combat est terminé !");
+
+        bool playerWon = false;
+        if (Players.Any(p => p.CurrentHP > 0))
+        {
+            return true;
+        }
+
+        OnLogMessage?.Invoke(playerWon ? "VICTOIRE !" : "DÉFAITE...");
         OnBattleEnd?.Invoke();
+
+        return playerWon;
+    }
+    public void ExecuteTurn(Pokemon active, Map map)
+    {
+        map.DrawMap(map);
+
+        if (Players.Contains(active))
+        {
+            map.PlayerTurn(active, map, Enemies);
+        }
+        else
+        {
+            OnLogMessage?.Invoke($"{active.Name} (IA) réfléchit...");
+            System.Threading.Thread.Sleep(500);
+        }
     }
 
-    public void ExecuteTurn(Pokemon active)
+    private bool IsBattleOver()
     {
-        int moveDistance = active.Stats.TotalSpeed / 10;
+        bool allPlayersDead = Players.All(p => p.CurrentHP <= 0);
+        bool allEnemiesDead = Enemies.All(p => p.CurrentHP <= 0);
+
+        return allPlayersDead || allEnemiesDead;
     }
 }

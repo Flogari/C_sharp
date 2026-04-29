@@ -24,21 +24,18 @@ public class Pokemon : Entity
         Moves = new List<Move>();
     }
 
-    // Méthode pour subir des dégâts
     public void TakeDamage(int damage)
     {
-        int finalDamage = Math.Max(1, damage - (Stats.TotalDefense / 2));
-        CurrentHP = CurrentHP - finalDamage;
-
-        if (CurrentHP < 0)
+        int finalDamage = Math.Max(1, damage);
+        this.CurrentHP = this.CurrentHP - finalDamage;
+        if (this.CurrentHP < 0)
         {
-            CurrentHP = 0;
+            this.CurrentHP = 0;
         }
 
-        // On déclenche l'événement pour l'UI
-        OnHealthChanged?.Invoke(CurrentHP, Stats.TotalMaxHP);
+        OnHealthChanged?.Invoke(this.CurrentHP, this.Stats.TotalMaxHP);
 
-        if (CurrentHP <= 0)
+        if (this.CurrentHP <= 0)
         {
             OnDeath?.Invoke();
         }

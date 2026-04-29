@@ -1,0 +1,23 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v10.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v10.0": {
+      "pokemon_c_sharp/1.0.0": {
+        "runtime": {
+          "pokemon_c_sharp.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "pokemon_c_sharp/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
