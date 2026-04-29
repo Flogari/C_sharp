@@ -1,6 +1,6 @@
 public class PhysicalMove : Move
 {
-    public PhysicalMove(string name, int power, int accuracy, PokemonType type) : base(name, power, accuracy, type)
+    public PhysicalMove(string name, int power, int accuracy, int range, PokemonType type) : base(name, power, accuracy, range, type)
     {
     }
 

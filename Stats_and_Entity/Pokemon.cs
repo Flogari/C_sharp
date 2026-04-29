@@ -13,8 +13,7 @@ public class Pokemon : Entity
     // Cet événement préviendra l'UI quand les PV changent
     public event Action<int, int> OnHealthChanged;
     public event Action OnDeath;
-
-    // public List<Move> Moves { get; private set; }
+    public List<Move> Moves { get; private set; }
 
     public Pokemon(string name, int hp, int atk, int def, int speatk, int spedef, int spd, PokemonType poketype) : base(name)
     {
@@ -22,7 +21,7 @@ public class Pokemon : Entity
         CurrentHP = Stats.BaseMaxHP;
         Level = 1;
         PokeType = poketype;
-        // Moves = new List<Move>();
+        Moves = new List<Move>();
     }
 
     // Méthode pour subir des dégâts
