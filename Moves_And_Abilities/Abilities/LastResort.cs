@@ -16,6 +16,7 @@ public class LastResort : Abilities
         if (currentHP < maxHP * 0.3f)
         {
             Owner.Stats.BonusAttack += (int)(Owner.Stats.BaseAttack * 1.2 + 1);
+            Owner.Stats.BonusSpecialAttack += (int)(Owner.Stats.BaseSpecialAttack * 1.2 + 1);
             Console.WriteLine($"[TALENT] {Name} s'active ! L'attaque de {Owner.Name} augmente !");
             Owner.OnHealthChanged -= CheckHealth;
         }

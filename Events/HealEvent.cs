@@ -1,6 +1,6 @@
 public class HealEvent : GameEvent
 {
-    public HealEvent() : base("Centre de Soin", "Un moment de repos pour reprendre des forces.")
+    public HealEvent() : base("Centre Pokémon", "Un moment de repos pour reprendre des forces.")
     {
 
     }

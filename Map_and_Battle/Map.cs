@@ -382,7 +382,7 @@ public class Map
             }
             else
             {
-                Console.Write("".PadRight((map.Width * 2) + 3));
+                Console.Write("".PadRight((map.Width * 2) + 8));
             }
 
             Console.ForegroundColor = ConsoleColor.White;
@@ -406,7 +406,7 @@ public class Map
 
                 string status = p.CurrentHP <= 0 ? "[K.O.]" : $"{p.CurrentHP}/{p.Stats.TotalMaxHP} HP";
 
-                Console.Write($"{p.Name.PadRight(10)} {status.PadRight(12)} ATK:{p.Stats.TotalAttack}, DEF:{p.Stats.TotalDefense}, SPEATK:{p.Stats.TotalSpecialAttack}, SPEDEF:{p.Stats.TotalSpecialDefense}, SPE:{p.Stats.TotalSpeed}");
+                Console.Write($"{p.Name.PadRight(16)} {status.PadRight(12)} ATK:{p.Stats.TotalAttack},DEF:{p.Stats.TotalDefense}, SPEATK:{p.Stats.TotalSpecialAttack}, SPEDEF:{p.Stats.TotalSpecialDefense}, SPE:{p.Stats.TotalSpeed}");
             }
 
             Console.WriteLine();

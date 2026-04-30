@@ -3,20 +3,20 @@ using System.Collections.Generic;
 
 public class Pokemon : Entity
 {
-    // Stats et État
-    public StatsContainer Stats { get; private set; }
-    public int CurrentHP { get; private set; }
-    public int Level { get; private set; }
-    public PokemonType PokeType { get; private set; }
-    public Abilities PokeAbilitie { get; private set; }
+    public StatsContainer Stats { get; set; }
+    public int CurrentHP { get; set; }
+    public int Level { get; set; }
+    public PokemonType PokeType { get; set; }
+    public Abilities PokeAbilitie { get; set; }
     public Weapon CurrentWeapon { get; set; }
     public Armor CurrentArmor { get; set; }
     public Item Item { get; set; }
     public event Action<int, int> OnHealthChanged;
     public event Action OnDeath;
-    public List<Move> Moves { get; private set; }
+    public List<Move> Moves { get; set; }
 
-    public Pokemon(string name, int hp, int atk, int def, int speatk, int spedef, int spd, PokemonType poketype) : base(name)
+    public Pokemon(string name, int hp, int atk, int def, int speatk,
+    int spedef,int spd, PokemonType poketype) : base(name)
     {
         Stats = new StatsContainer(hp, atk, def, speatk, spedef, spd);
         CurrentHP = Stats.BaseMaxHP;

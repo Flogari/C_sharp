@@ -6,17 +6,17 @@ public static class Initializer
     {
         List<Pokemon> team = new List<Pokemon>();
 
-        Pokemon p1 = new Pokemon("Bulbi", 120, 18, 25, 12, 20, 25, new GrassType());
+        Pokemon p1 = new Pokemon("Bulbizarre", 120, 18, 25, 12, 20, 25, new GrassType());
         p1.Moves.Add(new PhysicalMove("Fouet Lianes", 12, 100, 1, new GrassType()));
 
-        Pokemon p2 = new Pokemon("Sala", 90, 12, 15, 25, 15, 45, new FireType());
+        Pokemon p2 = new Pokemon("Salamèche", 90, 12, 15, 25, 15, 45, new FireType());
         p2.Moves.Add(new SpecialMove("Flammèche", 15, 100, 2, new FireType()));
         p2.Moves.Add(new PhysicalMove("Mach Punch", 15, 100, 2, new FightingType()));
 
-        Pokemon p3 = new Pokemon("Cara", 110, 20, 22, 15, 22, 30, new WaterType());
+        Pokemon p3 = new Pokemon("Carapuce", 110, 20, 22, 15, 22, 30, new WaterType());
         p3.Moves.Add(new PhysicalMove("Pistolet à O", 14, 100, 1, new WaterType()));
 
-        Pokemon p4 = new Pokemon("Pika", 80, 10, 10, 22, 12, 60, new ElectricType());
+        Pokemon p4 = new Pokemon("Pikachu", 80, 10, 10, 22, 12, 60, new ElectricType());
         p4.Moves.Add(new SpecialMove("Éclair", 12, 100, 4, new ElectricType()));
         p4.Moves.Add(new SpecialMove("Telluriforce", 12, 100, 3, new GroundType()));
 
