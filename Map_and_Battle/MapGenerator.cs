@@ -28,7 +28,7 @@ public class MapGenerator
         }
 
         List<Pokemon> AllPokemon = new List<Pokemon>(playerTeam);
-        foreach(Pokemon p in enemyTeam)
+        foreach (Pokemon p in enemyTeam)
         {
             AllPokemon.Add(p);
         }
@@ -43,7 +43,9 @@ public class MapGenerator
                     Console.WriteLine($"[LOG] {p.Name} a été retiré de la carte.");
                 }
             };
-
+        }
+        foreach (var p in enemyTeam)
+        {
             p.OnHealthChanged += (current, max) =>
             {
                 Console.WriteLine($"{p.Name} a maintenant {current}/{max} PV !");

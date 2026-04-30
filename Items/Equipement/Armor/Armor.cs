@@ -1,6 +1,6 @@
 public class Armor : Equipment
 {
-    public int DefenseBonus { get; }
+    public int DefenseBonus { get; set; }
 
     public Armor(string name, int defBonus) : base(name, $"+{defBonus} Défense")
     {

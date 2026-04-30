@@ -1,7 +1,6 @@
 ﻿void HandleLevelUp(List<Pokemon> team)
 {
     Random rng = new Random();
-    // On prend un Pokémon vivant au hasard
     var survivors = team.Where(p => p.CurrentHP > 0).ToList();
     if (survivors.Count == 0) return;
 
@@ -10,7 +9,6 @@
     Console.ForegroundColor = ConsoleColor.Green;
     Console.WriteLine($"\n[LEVEL UP] {luckyOne.Name} gagne en puissance !");
 
-    // Boost de stats
     luckyOne.Stats.BaseMaxHP += 5;
     luckyOne.Stats.BaseAttack += 5;
     luckyOne.Stats.BaseDefense += 5;
@@ -19,31 +17,41 @@
     luckyOne.Stats.BaseSpeed += 5;
     luckyOne.Heal(luckyOne.Stats.BaseMaxHP);
 
-    Move newMove = new PhysicalMove("Lance-Flamme", 15, 100, 2, new FireType()); // Range 1
+    Move newMove = new PhysicalMove("GIGA IMPACT", 150, 100, 5, new NormalType());
     luckyOne.Moves.Add(newMove);
 
     Console.WriteLine($"{luckyOne.Name} a appris {newMove.Name} !");
     Console.ResetColor();
 }
 
-void HandleRandomEvent(List<Pokemon> team)
+void HandleRandomEvent(List<Pokemon> team, int floor)
 {
     Random rng = new Random();
     List<GameEvent> events = new List<GameEvent>
     {
         new HealEvent(),
         new StatsChange(),
+        new LootEvent(floor),
     };
-
-    GameEvent currentEvent = events[rng.Next(events.Count)];
-
-    int PokemonEvent = rng.Next(0, 3);
-    currentEvent.Resolve(team[PokemonEvent]);
+    int i = 0;
+    foreach(Pokemon p in team)
+    {
+        GameEvent currentEvent = events[rng.Next(events.Count)];
+        currentEvent.Resolve(team[i]);
+        i++;
+    }
 }
 
 List<Pokemon> playerTeam = Initializer.CreatePlayerTeam();
-int floor = 1;
 
+foreach (var p in playerTeam)
+{
+    p.OnHealthChanged += (curr, max) => Console.WriteLine($"{p.Name} : {curr}/{max} PV");
+    p.SetTalent(new LastResort());
+}
+
+int floor = 1;
+Console.Clear();
 Console.WriteLine("=== BIENVENUE DANS LA MONDE DES POKEMONS ===");
 
 while (playerTeam.Any(p => p.CurrentHP > 0))
@@ -66,7 +74,7 @@ while (playerTeam.Any(p => p.CurrentHP > 0))
 
     HandleLevelUp(playerTeam);
 
-    HandleRandomEvent(playerTeam);
+    HandleRandomEvent(playerTeam, floor);
 
     floor++;
     Console.WriteLine("\nAppuyez sur une touche pour passer à l'étage suivant...");

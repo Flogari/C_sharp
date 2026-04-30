@@ -14,7 +14,7 @@ public class Cell
 
     public bool IsEmpty()
     {
-        if(Occupant == null && IsWalkable)
+        if (Occupant == null && IsWalkable)
         {
             return true;
         }
@@ -23,5 +23,5 @@ public class Cell
             return false;
         }
     }
-    
+
 }

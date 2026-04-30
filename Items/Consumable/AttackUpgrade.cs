@@ -1,6 +1,6 @@
 public class AttackUpgrade : Item, IConsumable
 {
-    public int AttackAmont { get; }
+    public int AttackAmont { get; set; }
 
     public AttackUpgrade(string name, int atkamont) : base(name, $"Augmente l'attaque de {atkamont}")
     {

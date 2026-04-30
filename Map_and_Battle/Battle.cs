@@ -2,6 +2,7 @@ public class Battle
 {
     public List<Pokemon> Players;
     public List<Pokemon> Enemies;
+    public List<Pokemon> AllPokemon;
     public Queue<Pokemon> TurnOrder;
     public event Action<string> OnLogMessage;
     public event Action OnBattleEnd;
@@ -26,22 +27,28 @@ public class Battle
         }
     }
 
-    public bool StartBattle(Map map) // Renvoie true si victoire, false si défaite
+    public bool StartBattle(Map map)
     {
+        bool first_turn = true;
         OnLogMessage?.Invoke("--- DÉBUT DE L'AFFRONTEMENT ---");
 
         while (!IsBattleOver())
         {
             DetermineTurnOrder();
+            if (first_turn == true)
+            {
+                AllPokemon = TurnOrder.ToList();
+                first_turn = false;
+            }
 
             while (TurnOrder.Count > 0 && !IsBattleOver())
             {
                 Pokemon activePoke = TurnOrder.Dequeue();
                 if (activePoke.CurrentHP <= 0) continue;
-                ExecuteTurn(activePoke, map);
+                ExecuteTurn(activePoke, map, AllPokemon);
             }
         }
-
+        
         bool playerWon = false;
         if (Players.Any(p => p.CurrentHP > 0))
         {
@@ -53,9 +60,9 @@ public class Battle
 
         return playerWon;
     }
-    public void ExecuteTurn(Pokemon active, Map map)
+    public void ExecuteTurn(Pokemon active, Map map, List<Pokemon> all_pokemon)
     {
-        map.DrawMap(map);
+        map.DrawMap(map, all_pokemon, active);
 
         if (Players.Contains(active))
         {
@@ -63,8 +70,8 @@ public class Battle
         }
         else
         {
-            OnLogMessage?.Invoke($"{active.Name} (IA) réfléchit...");
-            System.Threading.Thread.Sleep(500);
+            map.EnemyTurn(active, map, Players);
+            System.Threading.Thread.Sleep(800);
         }
     }
 

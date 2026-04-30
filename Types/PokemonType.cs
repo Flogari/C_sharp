@@ -25,7 +25,5 @@ public abstract class PokemonType
 {
     public ElementType Element { get; set; }
     public string Name => Element.ToString();
-
-    // Chaque type dira s'il est fort, faible ou neutre
     public abstract float GetMultiplier(ElementType targetElement);
 }

@@ -1,6 +1,6 @@
 public class Potion : Item, IConsumable
 {
-    public int HealAmount { get; }
+    public int HealAmount { get; set;}
 
     public Potion(string name, int healAmount) : base(name, $"Soigne {healAmount} PV.")
     {

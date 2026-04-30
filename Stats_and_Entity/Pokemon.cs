@@ -9,8 +9,9 @@ public class Pokemon : Entity
     public int Level { get; private set; }
     public PokemonType PokeType { get; private set; }
     public Abilities PokeAbilitie { get; private set; }
-
-    // Cet événement préviendra l'UI quand les PV changent
+    public Weapon CurrentWeapon { get; set; }
+    public Armor CurrentArmor { get; set; }
+    public Item Item { get; set; }
     public event Action<int, int> OnHealthChanged;
     public event Action OnDeath;
     public List<Move> Moves { get; private set; }

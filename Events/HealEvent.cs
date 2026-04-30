@@ -7,9 +7,11 @@ public class HealEvent : GameEvent
 
     public override void Resolve(Pokemon playerPokemon)
     {
+        Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine($"[EVENT] {Title}");
         int healAmount = (int)(playerPokemon.Stats.TotalMaxHP * 0.5f);
         playerPokemon.Heal(healAmount);
         Console.WriteLine($"{playerPokemon.Name} a récupéré {healAmount} PV.");
+        Console.ResetColor();
     }
 }

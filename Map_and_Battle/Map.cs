@@ -157,10 +157,23 @@ public class Map
             Console.WriteLine($"{i} : {action.move.Name} sur {action.target.Name}");
         }
 
+        IConsumable consumable = activePoke.Item as IConsumable;
+
+        if (consumable != null)
+        {
+            Console.WriteLine($"P : Utiliser {activePoke.Item.Name} ({activePoke.Item.Description})");
+        }
+
         Console.Write("Choisissez une action (ou 's' pour passer) : ");
         string choice = Console.ReadLine();
 
-        if (choice.ToLower() != "s")
+        if (choice == "p" && consumable != null)
+        {
+            consumable.Use(activePoke);
+            Console.WriteLine($"{activePoke.Name} utilise {activePoke.Item.Name} !");
+            activePoke.Item = null;
+        }
+        else if (choice.ToLower() != "s")
         {
             int index = int.Parse(choice);
             var selected = validActions[index];
@@ -182,42 +195,223 @@ public class Map
         }
 
     }
-
-    public void DrawMap(Map map)
+    public void EnemyTurn(Pokemon enemy, Map map, List<Pokemon> players)
     {
-        Console.ForegroundColor = ConsoleColor.DarkGray;
+        bool AttackWasUsed = false;
+        (Move move, Pokemon target, int damage) bestAction = (null, null, 0);
+
+        foreach (var m in enemy.Moves)
+        {
+            foreach (var p in players.Where(p => p.CurrentHP > 0))
+            {
+                if (map.IsTargetInRange(enemy, p, m, map))
+                {
+                    int dmg = CalculateTheoreticalDamage(enemy, p, m);
+                    if (dmg > bestAction.damage)
+                        bestAction = (m, p, dmg);
+                }
+            }
+        }
+
+        if (bestAction.target != null)
+        {
+            Console.WriteLine($"{enemy.Name} lance {bestAction.move.Name} sur {bestAction.target.Name} !");
+            bestAction.move.Execute(enemy, bestAction.target);
+            AttackWasUsed = true;
+        }
+        else
+        {
+            MoveTowardsClosestPlayer(enemy, map, players);
+        }
+        if (AttackWasUsed == false)
+        {
+            foreach (var m in enemy.Moves)
+            {
+                foreach (var p in players.Where(p => p.CurrentHP > 0))
+                {
+                    if (map.IsTargetInRange(enemy, p, m, map))
+                    {
+                        int dmg = CalculateTheoreticalDamage(enemy, p, m);
+                        if (dmg > bestAction.damage)
+                            bestAction = (m, p, dmg);
+                    }
+                }
+            }
+            if (bestAction.target != null)
+            {
+                Console.WriteLine($"{enemy.Name} lance {bestAction.move.Name} sur {bestAction.target.Name} !");
+                bestAction.move.Execute(enemy, bestAction.target);
+            }
+        }
+    }
+
+    private void MoveTowardsClosestPlayer(Pokemon enemy, Map map, List<Pokemon> players)
+    {
+        Cell enemyCell = map.GetPokemonCell(enemy);
+        Pokemon closestPlayer = null;
+        int minDistance = int.MaxValue;
+
+        foreach (var p in players.Where(p => p.CurrentHP > 0))
+        {
+            Cell pCell = map.GetPokemonCell(p);
+            int dist = map.GetDistance(enemyCell, pCell);
+            if (dist < minDistance)
+            {
+                minDistance = dist;
+                closestPlayer = p;
+            }
+        }
+
+        if (closestPlayer != null)
+        {
+            Cell targetCell = map.GetPokemonCell(closestPlayer);
+            int maxSteps = Math.Max(1, enemy.Stats.TotalSpeed / 10);
+
+            int nextX = enemyCell.X;
+            int nextY = enemyCell.Y;
+
+            for (int i = 0; i < maxSteps; i++)
+            {
+                int stepX = nextX;
+                int stepY = nextY;
+
+                if (nextX < targetCell.X)
+                {
+                    stepX++;
+                }
+                else if (nextX > targetCell.X)
+                {
+                    stepX--;
+                }
+
+                else if (nextY < targetCell.Y)
+                {
+                    stepY++;
+                }
+                else if (nextY > targetCell.Y)
+                {
+                    stepY--;
+                }
+
+                if (map.GetCell(stepX, stepY)?.IsEmpty() == true)
+                {
+                    nextX = stepX;
+                    nextY = stepY;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            if (nextX != enemyCell.X || nextY != enemyCell.Y)
+            {
+                map.MovePokemon(enemy, nextX, nextY, map);
+                Console.WriteLine($"{enemy.Name} s'approche de {closestPlayer.Name} (Position: {nextX},{nextY})");
+            }
+        }
+    }
+    public int CalculateTheoreticalDamage(Pokemon attacker, Pokemon target, Move move)
+    {
+        int baseDamage = 0;
+        float stab = 1.0f;
+        if (move is PhysicalMove)
+        {
+            baseDamage = (attacker.Stats.TotalAttack + move.Power) - (target.Stats.TotalDefense / 2);
+        }
+        else
+        {
+            baseDamage = (attacker.Stats.TotalSpecialAttack + move.Power) - (target.Stats.TotalSpecialDefense / 2);
+        }
+
+        if (attacker.CurrentWeapon != null)
+        {
+            baseDamage += (int)(attacker.CurrentWeapon.AttackBonus);
+        }
+        if (target.CurrentArmor != null)
+        {
+            baseDamage -= (int)(target.CurrentArmor.DefenseBonus);
+        }
+
+        if (attacker.PokeType.Element == move.MoveType.Element)
+        {
+            stab = 1.5f;
+        }
+
+        float multiplier = move.MoveType.GetMultiplier(target.PokeType.Element);
+
+        return (int)(Math.Max(1, baseDamage) * multiplier * stab);
+    }
+
+    public void DrawMap(Map map, List<Pokemon> turnOrder, Pokemon currentActing)
+    {
+        Console.WriteLine("--- CARTE ---");
+
         Console.Write("   ");
         for (int x = 0; x < map.Width; x++)
         {
             Console.Write($"{x.ToString().PadLeft(2)} ");
         }
-        Console.WriteLine();
-        Console.ResetColor();
+        Console.WriteLine("      ORDRE DES TOURS");
 
-        for (int y = 0; y < map.Height; y++)
+        int rowsToDraw = Math.Max(map.Height, turnOrder.Count);
+
+        for (int y = 0; y < rowsToDraw; y++)
         {
-            Console.ForegroundColor = ConsoleColor.DarkGray;
-            Console.Write($"{y.ToString().PadLeft(2)} ");
-            Console.ResetColor();
-
-            for (int x = 0; x < map.Width; x++)
+            if (y < map.Height)
             {
-                var cell = map.GetCell(x, y);
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.Write($"{y.ToString().PadLeft(2)} ");
+                for (int x = 0; x < map.Width; x++)
+                {
+                    var cell = map.GetCell(x, y);
 
-                if (cell.Occupant == null)
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    Console.Write(" . ");
-                    Console.ResetColor();
-                }
-                else if (cell.Occupant is Pokemon p)
-                {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.Write($" {p.Name[0]} ");
-                    Console.ResetColor();
+                    if (cell.Occupant == null)
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                        Console.Write(" . ");
+                        Console.ResetColor();
+                    }
+                    else if (cell.Occupant is Pokemon p)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write($" {p.Name[0]} ");
+                        Console.ResetColor();
+                    }
                 }
             }
+            else
+            {
+                Console.Write("".PadRight((map.Width * 2) + 3));
+            }
+
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write("  |  ");
+
+            if (y < turnOrder.Count)
+            {
+                Pokemon p = turnOrder[y];
+                bool isCurrent = (p == currentActing);
+
+                if (isCurrent)
+                {
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    Console.Write("  => ");
+                }
+                else
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("     ");
+                }
+
+                string status = p.CurrentHP <= 0 ? "[K.O.]" : $"{p.CurrentHP}/{p.Stats.TotalMaxHP} HP";
+
+                Console.Write($"{p.Name.PadRight(10)} {status.PadRight(12)} ATK:{p.Stats.TotalAttack}, DEF:{p.Stats.TotalDefense}, SPEATK:{p.Stats.TotalSpecialAttack}, SPEDEF:{p.Stats.TotalSpecialDefense}, SPE:{p.Stats.TotalSpeed}");
+            }
+
             Console.WriteLine();
+            Console.ResetColor();
         }
+        Console.WriteLine();
     }
 }
